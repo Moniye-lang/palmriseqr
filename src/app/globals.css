@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+:root {
+  --white:          #ffffff;
+  --bg-page:        #f8fafc;
+  --surface:        #ffffff;
+  --surface-alt:    #f1f5f9;
+  
+  /* Palmrise Royal & Cobalt Blue */
+  --blue-primary:   #1d4ed8;
+  --blue-vivid:     #2563eb;
+  --blue-deep:      #1e3a8a;
+  --blue-dark:      #0f172a;
+  --blue-light:     #eff6ff;
+  --blue-border:    #bfdbfe;
+  --blue-glow:      rgba(37, 99, 235, 0.25);
+
+  /* Palmrise Crimson & Scarlet Red */
+  --red-primary:    #dc2626;
+  --red-vivid:      #ef4444;
+  --red-dark:       #991b1b;
+  --red-light:      #fef2f2;
+  --red-border:     #fecaca;
+  --red-glow:       rgba(239, 68, 68, 0.25);
+
+  --text-main:      #0f172a;
+  --text-muted:     #64748b;
+  --border-card:    #e2e8f0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ─────────────────────────────────────────────
+   PALMRISE BRAND & TYPOGRAPHY UTILITIES
+   ───────────────────────────────────────────── */
+.brand-title {
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.palmrise-gradient-blue {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #3b82f6 100%);
+}
+
+.palmrise-gradient-red {
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #ef4444 100%);
+}
+
+.palmrise-blue-text {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.palmrise-red-text {
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 60%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────────
+   WHITE CARDS & SURFACES (PRIMARY: WHITE)
+   ───────────────────────────────────────────── */
+.card-white {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  transition: all 0.25s ease;
+}
+
+.card-white-hover:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 30px -4px rgba(37, 99, 235, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-2px);
+}
+
+.card-white-elevated {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.08), 0 8px 16px -4px rgba(37, 99, 235, 0.04);
+}
+
+/* Glassmorphism on clean white */
+.glass-white {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* ─────────────────────────────────────────────
+   BUTTONS (BLUE & RED ACCENTS ON WHITE)
+   ───────────────────────────────────────────── */
+.btn-palmrise-blue {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #ffffff;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-palmrise-blue:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-palmrise-red {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  color: #ffffff;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-palmrise-red:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-palmrise-outline {
+  background: #ffffff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-palmrise-outline:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+
+/* ─────────────────────────────────────────────
+   BADGES & ACCENTS
+   ───────────────────────────────────────────── */
+.badge-blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-red {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.badge-navy {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+/* Ticket punch holes & tear line for passes */
+.ticket-hole-left {
+  width: 24px;
+  height: 24px;
+  background: #f8fafc;
+  border-radius: 50%;
+  border-right: 1px solid #cbd5e1;
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.ticket-hole-right {
+  width: 24px;
+  height: 24px;
+  background: #f8fafc;
+  border-radius: 50%;
+  border-left: 1px solid #cbd5e1;
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.ticket-tear-dashed {
+  border-bottom: 2px dashed #cbd5e1;
+}
+
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────── */
+@keyframes pulse-blue {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  50%       { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50%       { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+}
+
+@keyframes laser-sweep {
+  0%   { top: 5%; opacity: 0.8; }
+  50%  { top: 90%; opacity: 1; }
+  100% { top: 5%; opacity: 0.8; }
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-pulse-blue   { animation: pulse-blue 2s infinite; }
+.animate-pulse-red    { animation: pulse-red 2s infinite; }
+.animate-laser        { animation: laser-sweep 2.5s ease-in-out infinite; }
+.animate-float        { animation: float-subtle 4s ease-in-out infinite; }
+.animate-fadeInUp     { animation: fadeInUp 0.5s ease forwards; }
+
+/* ─────────────────────────────────────────────
+   SCROLLBAR
+   ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Radio & Checkbox Accent */
+input[type="radio"], input[type="checkbox"] { accent-color: #2563eb; }
