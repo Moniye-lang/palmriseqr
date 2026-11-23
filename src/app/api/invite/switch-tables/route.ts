@@ -3,6 +3,8 @@ import dbConnect from '@/lib/mongodb';
 import Invite from '@/models/Invite';
 import TableSwitchLog from '@/models/TableSwitchLog';
 import { checkAdmin } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 import {
   TABLE_SWITCH_MAPPING,
   TABLE_CYCLES,

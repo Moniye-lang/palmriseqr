@@ -4,6 +4,8 @@ import Invite from '@/models/Invite';
 import { v4 as uuidv4 } from 'uuid';
 import { checkAdmin } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const admin = await checkAdmin(request);

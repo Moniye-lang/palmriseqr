@@ -4,6 +4,8 @@ import Invite from '@/models/Invite';
 import { checkAdmin } from '@/lib/auth';
 import { sendWhatsAppMessage } from '@/lib/whatsapp';
 
+export const dynamic = 'force-dynamic';
+
 interface BulkSendRequestBody {
   inviteIds?: string[];
   forceResend?: boolean;

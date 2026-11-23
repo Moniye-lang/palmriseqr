@@ -3,6 +3,8 @@ import dbConnect from '@/lib/mongodb';
 import Invite from '@/models/Invite';
 import { checkAdmin } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

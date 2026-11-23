@@ -4,6 +4,8 @@ import Invite from '@/models/Invite';
 import { v4 as uuidv4 } from 'uuid';
 import { sendRsvpNotification } from '@/lib/email';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     await dbConnect();

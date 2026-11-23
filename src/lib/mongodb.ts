@@ -8,17 +8,6 @@ try {
   // Silent fallback
 }
 
-const MONGO_URI = process.env.MONGO_URI;
-
-if (!MONGO_URI) {
-  throw new Error('Please define the MONGO_URI environment variable inside .env.local');
-}
-
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections from growing exponentially
- * during API Route usage.
- */
 let cached = (global as any).mongoose;
 
 if (!cached) {
@@ -26,6 +15,12 @@ if (!cached) {
 }
 
 async function dbConnect() {
+  const MONGO_URI = process.env.MONGO_URI;
+
+  if (!MONGO_URI) {
+    throw new Error('Please define the MONGO_URI environment variable inside .env.local or Vercel Project Settings');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -35,7 +30,7 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGO_URI!, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }
