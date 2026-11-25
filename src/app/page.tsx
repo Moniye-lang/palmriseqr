@@ -51,16 +51,23 @@ export default function HomePage() {
     const query = tokenInput.trim();
 
     try {
-      // First try direct token check
+      // Verify the token exists first
       const res = await fetch(`/api/invite/${encodeURIComponent(query)}`);
       const data = await res.json();
 
       if (data.success && data.invite) {
-        router.push(`/invite/${encodeURIComponent(data.invite.token)}`);
+        const inv = data.invite;
+        if (inv.rsvpSubmitted && inv.attending === 'yes') {
+          // Already confirmed — go straight to their pass
+          router.push(`/invite/${encodeURIComponent(inv.token)}`);
+        } else {
+          // Not yet RSVPed — go to RSVP form to fill in details
+          router.push(`/rsvp?token=${encodeURIComponent(inv.token)}`);
+        }
         return;
       }
 
-      // If not a direct token, check via RSVP search or redirect to RSVP page
+      // Token not found — send to RSVP page to show error
       router.push(`/rsvp?code=${encodeURIComponent(query)}`);
     } catch (err) {
       router.push(`/rsvp?code=${encodeURIComponent(query)}`);

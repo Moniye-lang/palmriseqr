@@ -61,6 +61,11 @@ export default function GuestPassPage() {
         const data = await res.json();
 
         if (data.success && data.invite) {
+          // If the guest hasn't submitted their RSVP yet, redirect them to fill the form first
+          if (!data.invite.rsvpSubmitted) {
+            router.replace(`/rsvp?token=${encodeURIComponent(data.invite.token)}`);
+            return;
+          }
           setInvite(data.invite);
           // Generate QR code data URL
           const qr = await QRCode.toDataURL(data.invite.token, {

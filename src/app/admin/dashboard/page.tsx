@@ -144,11 +144,15 @@ export default function AdminDashboard() {
     router.push('/admin/login');
   };
 
-  const copyInviteLink = (inviteToken: string) => {
+  const copyInviteLink = (invite: Invite) => {
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    const link = `${origin}/invite/${inviteToken}`;
+    // If RSVP already submitted, send straight to their pass; otherwise send to RSVP form first
+    const path = invite.rsvpSubmitted
+      ? `/invite/${encodeURIComponent(invite.token)}`
+      : `/rsvp?token=${encodeURIComponent(invite.token)}`;
+    const link = `${origin}${path}`;
     navigator.clipboard.writeText(link);
-    setCopyToast(inviteToken);
+    setCopyToast(invite.token);
     setTimeout(() => setCopyToast(null), 2500);
   };
 
@@ -760,9 +764,9 @@ export default function AdminDashboard() {
                           
                           {/* Copy Link */}
                           <button
-                            onClick={() => copyInviteLink(inv.token)}
+                            onClick={() => copyInviteLink(inv)}
                             className="p-1.5 rounded-lg text-slate-500 hover:text-[#1D4ED8] hover:bg-blue-50 transition-all"
-                            title="Copy Pass Link"
+                            title={inv.rsvpSubmitted ? 'Copy Pass Link' : 'Copy RSVP Link'}
                           >
                             {copyToast === inv.token ? (
                               <Check className="w-4 h-4 text-emerald-600" />
