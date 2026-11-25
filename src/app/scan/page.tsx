@@ -124,12 +124,15 @@ export default function Scanner() {
     } catch (err: any) {
       console.error('Scanner start error:', err);
       setStatus('error');
-      if (err.toString().includes("NotAllowedError")) {
-        setErrorMessage('Camera access was denied. Please allow camera permissions in browser settings.');
-      } else if (err.toString().includes("NotFoundError")) {
-        setErrorMessage('No camera hardware was detected on this device.');
+      const errStr = err.toString().toLowerCase();
+      if (errStr.includes('notallowederror') || errStr.includes('permission')) {
+        setErrorMessage('Camera permission denied. Please tap the camera icon in your browser address bar and allow access, then try again.');
+      } else if (errStr.includes('notfounderror') || errStr.includes('no camera')) {
+        setErrorMessage('No camera detected on this device. Use the Manual Token Entry below to verify the guest pass instead.');
+      } else if (errStr.includes('notreadableerror') || errStr.includes('in use') || errStr.includes('busy') || errStr.includes('abort')) {
+        setErrorMessage('Camera is currently in use by another application. Close other apps using the camera (e.g. a video call), then tap "Try Again".');
       } else {
-        setErrorMessage('Unable to initialize camera. Ensure no other application is using it.');
+        setErrorMessage('Could not start camera scanner. Use the Manual Token Entry below to verify the guest pass token directly.');
       }
     }
   };
@@ -396,7 +399,9 @@ export default function Scanner() {
               <div className="p-3.5 rounded-xl bg-red-50/60 border border-red-200 text-xs text-slate-600 flex items-start gap-2 text-left">
                 <AlertTriangle className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                 <span>
-                  Please check if this voucher was already validated earlier or verify the guest's name directly in the Admin Dashboard.
+                  {result?.message
+                    ? 'Please verify the guest\'s name in the Admin Dashboard or use Manual Token Entry below.'
+                    : 'Use the Manual Token Entry section below to validate the guest pass without the camera.'}
                 </span>
               </div>
 
