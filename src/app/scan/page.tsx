@@ -98,44 +98,99 @@ export default function Scanner() {
   }, [router]);
 
   const stopScanner = async () => {
-    if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+    if (html5QrCodeRef.current) {
       try {
-        await html5QrCodeRef.current.stop();
+        if (html5QrCodeRef.current.isScanning) {
+          await html5QrCodeRef.current.stop();
+        }
         html5QrCodeRef.current.clear();
       } catch (err) {
         console.error('Failed to stop scanner:', err);
+      } finally {
+        html5QrCodeRef.current = null;
       }
     }
   };
 
-  const startScanner = async () => {
+  const startScanner = () => {
     setErrorMessage(null);
+    setResult(null);
     setStatus('scanning');
-    try {
-      const html5QrCode = new Html5Qrcode("reader");
-      html5QrCodeRef.current = html5QrCode;
-      const config = { fps: 12, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
-      await html5QrCode.start(
-        { facingMode: "environment" },
-        config,
-        onScanSuccess,
-        undefined
-      );
-    } catch (err: any) {
-      console.error('Scanner start error:', err);
-      setStatus('error');
-      const errStr = err.toString().toLowerCase();
-      if (errStr.includes('notallowederror') || errStr.includes('permission')) {
-        setErrorMessage('Camera permission denied. Please tap the camera icon in your browser address bar and allow access, then try again.');
-      } else if (errStr.includes('notfounderror') || errStr.includes('no camera')) {
-        setErrorMessage('No camera detected on this device. Use the Manual Token Entry below to verify the guest pass instead.');
-      } else if (errStr.includes('notreadableerror') || errStr.includes('in use') || errStr.includes('busy') || errStr.includes('abort')) {
-        setErrorMessage('Camera is currently in use by another application. Close other apps using the camera (e.g. a video call), then tap "Try Again".');
-      } else {
-        setErrorMessage('Could not start camera scanner. Use the Manual Token Entry below to verify the guest pass token directly.');
-      }
-    }
   };
+
+  useEffect(() => {
+    if (status !== 'scanning') return;
+    let cancelled = false;
+
+    const initCamera = async () => {
+      // Ensure #reader element is mounted in DOM
+      const readerEl = document.getElementById('reader');
+      if (!readerEl) return;
+
+      try {
+        await stopScanner();
+        if (cancelled) return;
+
+        const html5QrCode = new Html5Qrcode('reader');
+        html5QrCodeRef.current = html5QrCode;
+        const config = { fps: 12, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
+
+        try {
+          await html5QrCode.start(
+            { facingMode: 'environment' },
+            config,
+            onScanSuccess,
+            undefined
+          );
+        } catch (envErr: any) {
+          if (cancelled) return;
+          const envStr = String(envErr).toLowerCase();
+          // If rear camera isn't available (e.g. laptop webcam), fall back to user camera or first available device
+          if (
+            envStr.includes('overconstrained') ||
+            envStr.includes('notfound') ||
+            envStr.includes('requested device not found')
+          ) {
+            const cameras = await Html5Qrcode.getCameras();
+            if (cancelled) return;
+            if (cameras && cameras.length > 0) {
+              await html5QrCode.start(
+                cameras[0].id,
+                config,
+                onScanSuccess,
+                undefined
+              );
+            } else {
+              throw envErr;
+            }
+          } else {
+            throw envErr;
+          }
+        }
+      } catch (err: any) {
+        if (cancelled) return;
+        console.error('Scanner start error:', err);
+        setStatus('error');
+        const errStr = String(err).toLowerCase();
+        if (errStr.includes('notallowederror') || errStr.includes('permission')) {
+          setErrorMessage('Camera permission denied. Please tap the camera icon in your browser address bar and allow access, then try again.');
+        } else if (errStr.includes('notfounderror') || errStr.includes('no camera') || errStr.includes('requested device not found')) {
+          setErrorMessage('No camera detected on this device. Use the Manual Token Entry below to verify the guest pass instead.');
+        } else if (errStr.includes('notreadableerror') || errStr.includes('in use') || errStr.includes('busy') || errStr.includes('abort')) {
+          setErrorMessage('Camera is currently in use by another application. Close other apps using the camera (e.g. a video call), then tap "Try Again".');
+        } else {
+          setErrorMessage('Could not start camera scanner. Use the Manual Token Entry below to verify the guest pass token directly.');
+        }
+      }
+    };
+
+    initCamera();
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   const verifyToken = async (scannedToken: string) => {
     setStatus('checking');
