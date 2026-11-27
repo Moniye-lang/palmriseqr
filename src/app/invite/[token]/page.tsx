@@ -54,6 +54,7 @@ export default function GuestPassPage() {
 
   useEffect(() => {
     if (!token) return;
+    let isRedirecting = false;
     const fetchInvite = async () => {
       try {
         setLoading(true);
@@ -63,6 +64,7 @@ export default function GuestPassPage() {
         if (data.success && data.invite) {
           // If the guest hasn't submitted their RSVP yet, redirect them to fill the form first
           if (!data.invite.rsvpSubmitted) {
+            isRedirecting = true;
             router.replace(`/rsvp?token=${encodeURIComponent(data.invite.token)}`);
             return;
           }
@@ -84,12 +86,14 @@ export default function GuestPassPage() {
       } catch (err) {
         setError('Failed to load invitation. Please check your network connection.');
       } finally {
-        setLoading(false);
+        if (!isRedirecting) {
+          setLoading(false);
+        }
       }
     };
 
     fetchInvite();
-  }, [token]);
+  }, [token, router]);
 
   const handleDownload = async () => {
     if (!invite) return;
