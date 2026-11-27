@@ -11,13 +11,12 @@ export default function PalmriseLogo({
   className = '',
   size = 'md',
   showSubtitle = true,
-  inverted = false,
 }: LogoProps) {
   const iconSizes = {
-    sm: 'w-7 h-7',
-    md: 'w-9 h-9',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16',
+    sm: 'w-9 h-9',
+    md: 'w-11 h-11',
+    lg: 'w-14 h-14',
+    xl: 'w-20 h-20',
   };
 
   const titleSizes = {
@@ -28,65 +27,20 @@ export default function PalmriseLogo({
   };
 
   const subSizes = {
-    sm: 'text-[9px] tracking-[0.25em]',
-    md: 'text-[10px] tracking-[0.3em]',
-    lg: 'text-xs tracking-[0.35em]',
-    xl: 'text-sm tracking-[0.4em]',
+    sm: 'text-[9px] tracking-[0.22em]',
+    md: 'text-[10px] tracking-[0.26em]',
+    lg: 'text-xs tracking-[0.3em]',
+    xl: 'text-sm tracking-[0.35em]',
   };
 
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
-      {/* Palmrise Stylized Emblem: Royal Blue & Crimson Red */}
-      <div className={`relative ${iconSizes[size]} shrink-0 rounded-xl flex items-center justify-center bg-white shadow-sm border border-slate-200 overflow-hidden`}>
-        <svg
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full p-1.5"
-        >
-          {/* Blue Palm Fronds / Shield */}
-          <path
-            d="M24 4C14 4 6 12 6 22C6 32 15 39 24 44C33 39 42 32 42 22C42 12 34 4 24 4Z"
-            fill="#1E40AF"
-            fillOpacity="0.08"
-          />
-          {/* Palm Arch Left (Royal Blue) */}
-          <path
-            d="M24 38C24 28 17 21 11 20C17 23 21 28 22 35"
-            stroke="#1D4ED8"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          {/* Palm Arch Right (Royal Blue) */}
-          <path
-            d="M24 38C24 28 31 21 37 20C31 23 27 28 26 35"
-            stroke="#2563eb"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          {/* Palm Center Stem */}
-          <path
-            d="M24 40V12"
-            stroke="#1E40AF"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          {/* Rising Sun / Horizon (Crimson Red) */}
-          <circle cx="24" cy="14" r="5" fill="#DC2626" />
-          {/* QR Scan Corner Marker (Red Accent) */}
-          <path
-            d="M17 10H14V13"
-            stroke="#DC2626"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M31 10H34V13"
-            stroke="#DC2626"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+      <div className={`relative ${iconSizes[size]} shrink-0 rounded-full overflow-hidden bg-[#faf8f0] border border-slate-200 shadow-sm flex items-center justify-center`}>
+        <img
+          src="/palmrise-logo.png"
+          alt="Palmrise Interior Design Logo"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <div className="flex flex-col text-left">
@@ -98,7 +52,7 @@ export default function PalmriseLogo({
         </div>
         {showSubtitle && (
           <span className={`font-bold uppercase ${subSizes[size]} text-[#1D4ED8] mt-1`}>
-            Event Management System
+            Event Access System
           </span>
         )}
       </div>
