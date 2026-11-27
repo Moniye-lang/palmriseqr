@@ -30,7 +30,7 @@ function RsvpContent() {
   // Form states
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [attending, setAttending] = useState<'yes' | 'no'>('yes');
+  const [attending, setAttending] = useState<'yes' | 'no' | null>(null);
   const [additionalGuestNames, setAdditionalGuestNames] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -60,7 +60,7 @@ function RsvpContent() {
         setInviteData(inv);
         setName(inv.name || '');
         setPhone(inv.phone || '');
-        setAttending(inv.attending || 'yes');
+        setAttending(inv.rsvpSubmitted ? inv.attending || null : null);
 
         // If RSVP is already submitted and confirmed, go straight to pass
         if (inv.rsvpSubmitted && inv.attending === 'yes') {
@@ -92,7 +92,12 @@ function RsvpContent() {
     e.preventDefault();
     if (!inviteData) return;
 
-    if (!name.trim()) {
+    if (!attending) {
+      setSubmitError('Please select "Joyfully Accept" or "Regretfully Decline".');
+      return;
+    }
+
+    if (attending === 'yes' && !name.trim()) {
       setSubmitError('Please enter your full name.');
       return;
     }
@@ -237,6 +242,18 @@ function RsvpContent() {
               </button>
             </div>
 
+            {/* Simple 3-step summary for invited guests */}
+            <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-xs text-slate-700 space-y-1.5">
+              <p className="font-bold text-[#1D4ED8] uppercase tracking-wider text-[10px]">
+                Quick Steps for Your Invite
+              </p>
+              <ol className="list-decimal list-inside space-y-1 text-slate-600 leading-relaxed">
+                <li>Pick <span className="font-semibold text-slate-800">Joyfully Accept</span> or <span className="font-semibold text-slate-800">Regretfully Decline</span> below.</li>
+                <li>Confirm your name and submit to generate your QR pass.</li>
+                <li><span className="font-semibold text-slate-800">Save your QR pass</span> (download or screenshot it) to show at the gate.</li>
+              </ol>
+            </div>
+
             <form onSubmit={handleRsvpSubmit} className="space-y-5">
               {submitError && (
                 <div className="p-3.5 bg-red-50 border border-red-200 text-[#DC2626] rounded-xl text-xs font-medium">
@@ -343,8 +360,8 @@ function RsvpContent() {
 
               <button
                 type="submit"
-                disabled={submitting}
-                className="w-full py-4 bg-[#1D4ED8] hover:bg-[#1E40AF] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                disabled={submitting || !attending}
+                className="w-full py-4 bg-[#1D4ED8] hover:bg-[#1E40AF] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <>
@@ -354,7 +371,13 @@ function RsvpContent() {
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>{attending === 'yes' ? 'Confirm & Get My QR Pass' : 'Submit Response'}</span>
+                    <span>
+                      {attending === 'yes'
+                        ? 'Confirm & Get My QR Pass'
+                        : attending === 'no'
+                          ? 'Submit Response'
+                          : 'Select Attendance Above'}
+                    </span>
                   </>
                 )}
               </button>

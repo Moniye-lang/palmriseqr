@@ -263,8 +263,11 @@ export default function GuestPassPage() {
 
               <div className="text-center space-y-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#DC2626]">
-                  Present QR at Venue Gate
+                  Save This Pass · Present QR at Venue Gate
                 </span>
+                <p className="text-[11px] text-slate-600">
+                  Please tap <span className="font-semibold text-slate-800">Download PNG Pass</span> below or take a screenshot to save it for entry.
+                </p>
                 <p className="font-mono text-[10px] text-slate-400">
                   REF: {invite.token.substring(0, 8)}...{invite.token.substring(invite.token.length - 8)}
                 </p>
