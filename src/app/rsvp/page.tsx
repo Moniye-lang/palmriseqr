@@ -389,12 +389,6 @@ function RsvpContent() {
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
               We regret you are unable to attend the Palmrise Executive Gala. Thank you for notifying us.
             </p>
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs uppercase tracking-wider"
-            >
-              Return Home
-            </Link>
           </div>
         )}
 
