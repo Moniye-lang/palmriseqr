@@ -154,13 +154,7 @@ export default function GuestPassPage() {
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 py-10 px-4 sm:px-6 flex flex-col items-center justify-between relative selection:bg-blue-100">
       
       {/* Top Navigation */}
-      <div className="max-w-md w-full mx-auto flex items-center justify-between pb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-700 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> Return to Portal
-        </Link>
+      <div className="max-w-md w-full mx-auto flex items-center justify-end pb-6">
         <span className="text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8] bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">
           Official Digital Pass
         </span>

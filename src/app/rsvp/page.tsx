@@ -21,9 +21,9 @@ function RsvpContent() {
   const router = useRouter();
   const initialCode = searchParams.get('code') || searchParams.get('token') || '';
 
-  // Lookup state
+  // Lookup state — start in loading state immediately if token is in URL so Step 1 never flashes
   const [passcode, setPasscode] = useState(initialCode);
-  const [lookingUp, setLookingUp] = useState(false);
+  const [lookingUp, setLookingUp] = useState(Boolean(initialCode));
   const [inviteData, setInviteData] = useState<any>(null);
   const [lookupError, setLookupError] = useState<string | null>(null);
 
@@ -145,13 +145,7 @@ function RsvpContent() {
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 py-10 px-4 sm:px-6 flex flex-col items-center justify-between selection:bg-blue-100">
       
       {/* Top Navbar */}
-      <div className="max-w-xl w-full mx-auto flex items-center justify-between pb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-700 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> Return to Portal
-        </Link>
+      <div className="max-w-xl w-full mx-auto flex items-center justify-end pb-6">
         <span className="text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8] bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">
           Guest RSVP Center
         </span>
@@ -170,11 +164,19 @@ function RsvpContent() {
           </p>
         </div>
 
-        {/* ── STEP 1: LOOKUP CODE (IF NOT YET LOADED) ──────────────── */}
-        {!inviteData && !declined && (
+        {/* ── LOADING STATE WHEN TOKEN IS IN URL ───────────────────── */}
+        {!inviteData && !declined && lookingUp && (
+          <div className="card-white rounded-3xl p-10 shadow-xl border border-slate-200 flex flex-col items-center justify-center gap-3 text-center">
+            <Loader2 className="w-8 h-8 text-[#1D4ED8] animate-spin" />
+            <p className="text-sm font-semibold text-slate-600">Loading your invitation...</p>
+          </div>
+        )}
+
+        {/* ── STEP 1: LOOKUP CODE (ONLY IF NO TOKEN OR LOOKUP FAILED) ─ */}
+        {!inviteData && !declined && !lookingUp && (
           <div className="card-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 space-y-6">
             <div className="space-y-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#1D4ED8]">Step 1 of 2</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#1D4ED8]">Find Invitation</span>
               <h2 className="text-xl font-bold text-slate-900">Look Up Your Invitation</h2>
               <p className="text-xs text-slate-500">
                 Enter your invitation token or passcode provided in your SMS dispatch.
@@ -205,17 +207,8 @@ function RsvpContent() {
                 disabled={lookingUp}
                 className="w-full py-3.5 bg-[#1D4ED8] hover:bg-[#1E40AF] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                {lookingUp ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Verifying Code...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Proceed to RSVP</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </>
-                )}
+                <span>Proceed to RSVP</span>
+                <ChevronRight className="w-4 h-4" />
               </button>
             </form>
           </div>
