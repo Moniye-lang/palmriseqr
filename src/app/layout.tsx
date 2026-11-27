@@ -6,10 +6,11 @@ export const metadata: Metadata = {
   description: "Palmrise Event Management System — Unified QR ticketing, guest RSVP, table management, and real-time gate check-in.",
   icons: {
     icon: [
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" }
+      { url: "/palmrise-logo.png", type: "image/png" }
     ],
+    shortcut: "/palmrise-logo.png",
     apple: [
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" }
+      { url: "/palmrise-logo.png", type: "image/png" }
     ]
   },
   openGraph: {
